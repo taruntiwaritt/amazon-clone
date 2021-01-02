@@ -1,7 +1,39 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useHistory, Link } from "react-router-dom";
+import { auth } from "./firebase";
 import "./Login.css";
 function Login() {
+  const history = useHistory();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const signIn = (e) => {
+    e.preventDefault();
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then((auth) => {
+        console.log("signed in by", auth);
+        if (auth) history.push("/");
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  };
+
+  const register = (e) => {
+    e.preventDefault();
+
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((auth) => {
+        console.log("created", auth);
+        if (auth) history.push("/");
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  };
+
   return (
     <div className="login">
       <Link to="/">
@@ -14,10 +46,25 @@ function Login() {
         <h1>Sign-in</h1>
         <form>
           <h5>Email</h5>
-          <input type="text" />
+          <input
+            type="text"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
           <h5>Password</h5>
-          <input type="password" />
-          <button className="login__signInButton"> Sign In</button>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button
+            type="submit"
+            className="login__signInButton"
+            onClick={signIn}
+          >
+            {" "}
+            Sign In
+          </button>
         </form>
 
         <p>
@@ -26,7 +73,7 @@ function Login() {
           Interest-Based Ads Notice.
         </p>
 
-        <button className="login__registerButton">
+        <button onClick={register} className="login__registerButton">
           Create your Amazon Account
         </button>
       </div>
