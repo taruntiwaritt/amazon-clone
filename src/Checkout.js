@@ -6,6 +6,10 @@ import Subtotal from "./Subtotal";
 function Checkout() {
   const [{ basket, user }, dispatch] = useStateValue();
   console.log(basket);
+
+  const getRandomValue = () => {
+    return Math.floor(Math.random() * 100001).toString();
+  };
   return (
     <div className="checkout">
       <div className="checkout__left">
@@ -20,7 +24,7 @@ function Checkout() {
           {basket.map(({ id, title, image, price, rating }) => {
             return (
               <CheckoutProduct
-                key={id}
+                key={id + getRandomValue()}
                 id={id}
                 title={title}
                 image={image}

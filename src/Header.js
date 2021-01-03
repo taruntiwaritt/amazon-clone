@@ -11,6 +11,12 @@ function Header() {
   const handleAuthentication = () => {
     if (user) auth.signOut();
   };
+
+  const guestName = () => {
+    const emailAdr = user?.email;
+    if (user) return emailAdr.split("@")[0];
+    return "Guest";
+  };
   return (
     <div className="header">
       <Link to="/">
@@ -26,7 +32,7 @@ function Header() {
       <div className="header__nav">
         <Link to={!user && "/login"}>
           <div onClick={handleAuthentication} className="header__option">
-            <span className="header__optionLineOne">Hello Guest</span>
+            <span className="header__optionLineOne">Hello {guestName()}</span>
             <span className="header__optionLineTwo">
               {user ? "Sign Out" : "Sign In"}
             </span>

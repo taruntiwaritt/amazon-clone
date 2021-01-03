@@ -7,20 +7,21 @@ import Checkout from "./Checkout";
 import Login from "./Login";
 import { auth } from "./firebase";
 import { useStateValue } from "./StateProvider";
+
 function App() {
-  const [{}, dispath] = useStateValue();
+  const [{}, dispatch] = useStateValue();
 
   useEffect(() => {
     auth.onAuthStateChanged((authUser) => {
       console.log("The user is", authUser);
 
       if (authUser) {
-        dispath({
+        dispatch({
           type: "SET_USER",
           user: authUser,
         });
       } else {
-        dispath({
+        dispatch({
           type: "SET_USER",
           user: null,
         });
