@@ -32,16 +32,16 @@ function Payment() {
         //changes after basket items change as the total amount will change
         const getClientSecret = async()=>{
             const response = await axios({
-                maethods: 'post',
+                method: 'post',
                 //stripe expects the total in a currencies subunits
                 url: `/payments/create?total=${getBasketTotal(basket) * 100}`
             });
-
             setClientSecret(response.data.clientSecret);
         }
 
         getClientSecret();
     },[basket])
+
 
     const handleSubmit=async (event)=>{
         event.preventDefault();
@@ -52,12 +52,14 @@ function Payment() {
             }
         }).then(({paymentIntent})=>{
             //payment intent is the paymentConfirmation
-
+            
             setSucceeded(true);
             setError(null);
             setProcessing(false);
 
             history.replace("/orders")
+        }).catch(err=>{
+            console.log("some error",err)
         })
         
     }

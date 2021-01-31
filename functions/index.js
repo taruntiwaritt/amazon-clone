@@ -16,11 +16,10 @@ const app = express()
 //Middleware
 
 app.use(cors({origin : true}));
-app.use(express.json);
 
 
+app.use(express.json());
 //API route
-app.get('/', (request,response)=> response.status(200).send('hello world'))
 
 app.post('/payments/create',async(request,response)=>{
     const total = request.query.total;
@@ -32,12 +31,9 @@ app.post('/payments/create',async(request,response)=>{
     });
 
     response.status(201).send({
-        clientSecret: paymentIntent.clientSecret
+        clientSecret: paymentIntent.client_secret
     })
+
 });
-//Listen command
-const runtimeOpts = {
-    timeoutSeconds: 300
-  }
   
-exports.api = functions.runWith(runtimeOpts).https.onRequest(app);
+exports.api = functions.https.onRequest(app);
